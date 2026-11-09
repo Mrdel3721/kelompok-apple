@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nikah Jangan Cuma Modal Nekat — E-Booklet Fiqih Munakahat (Kelompok Apple)</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="selection:bg-emerald-900 selection:text-white">
+  <!-- ==================== STICKY APPLE GLASS NAVBAR ==================== -->
+  <header class="fixed top-0 inset-x-0 z-50 apple-glass border-b border-stone-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+      <!-- Brand / Kelompok Apple -->
+      <a href="#sampul" class="flex items-center gap-2.5 group focus:outline-none">
+        <div class="w-8 h-8 rounded-xl bg-[#234233] text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+          <!-- Minimalist Apple + Book Leaf Icon -->
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.33c.67-.81 1.12-1.94 1-3.08-.96.04-2.13.64-2.82 1.45-.61.7-.11 1.85-.99 2.98 1.08.08 2.14-.54 2.81-1.35"/>
+          </svg>
+        </div>
+        <div class="leading-tight">
+          <span class="font-bold text-sm tracking-tight text-stone-900 block">Kelompok Apple</span>
+          <span class="text-[11px] text-stone-500 font-medium block">E-Booklet Fiqih Munakahat</span>
+        </div>
+      </a>
+
+      <!-- Center Navigation Links (Desktop) -->
+      <nav id="desktopNav" class="hidden md:flex items-center gap-1 bg-stone-200/60 p-1 rounded-full text-xs font-semibold text-stone-600">
+        <a href="#sampul" class="px-3 py-1.5 rounded-full hover:text-stone-900 transition">1. Sampul</a>
+        <a href="#realitas" class="px-3 py-1.5 rounded-full hover:text-stone-900 transition">2. Medsos vs Realitas</a>
+        <a href="#istithaah" class="px-3 py-1.5 rounded-full hover:text-stone-900 transition">3. Istitha'ah</a>
+        <a href="#hukum" class="px-3 py-1.5 rounded-full hover:text-stone-900 transition">4. 5 Hukum</a>
+        <a href="#maqashid" class="px-3 py-1.5 rounded-full hover:text-stone-900 transition">5. Maqashid</a>
+        <a href="#asesmen" class="px-3 py-1.5 rounded-full hover:text-stone-900 transition">6. Tes Kesiapan</a>
+      </nav>
+
+      <!-- Mode Toggle: Landing Scroll vs Booklet Page-by-Page -->
+      <div class="flex items-center gap-2">
+        <div class="inline-flex rounded-full bg-stone-200/75 p-0.5 text-xs font-semibold">
+          <button id="btnModeScroll" type="button" class="px-3 py-1 rounded-full bg-[#234233] text-white shadow-sm transition">
+            Landing
+          </button>
+          <button id="btnModeBooklet" type="button" class="px-3 py-1 rounded-full text-stone-700 hover:text-stone-900 transition">
+            Per Halaman (1–6)
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== BOOKLET PAGINATION CONTROLLER BAR (HIDDEN IN SCROLL MODE) ==================== -->
+  <div id="bookletControllerBar" class="hidden fixed bottom-5 inset-x-0 z-40 px-4 pointer-events-none">
+    <div class="max-w-md mx-auto apple-glass border border-stone-300/90 rounded-full px-4 py-2.5 shadow-xl flex items-center justify-between pointer-events-auto">
+      <button id="btnPrevPage" type="button" class="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-stone-900 text-white disabled:opacity-35 transition">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        Sebelumnya
+      </button>
+      <div class="text-center">
+        <span id="bookletPageIndicator" class="text-xs font-bold text-stone-900 block">Halaman 1 dari 6</span>
+        <span id="bookletPageTitle" class="text-[11px] text-stone-500 block">Sampul (Cover)</span>
+      </div>
+      <button id="btnNextPage" type="button" class="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-[#234233] text-white disabled:opacity-35 transition">
+        Selanjutnya
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="pt-14 pb-24">
+
+    <!-- =====================================================================
+         HALAMAN 1: SAMPUL (COVER)
+    ====================================================================== -->
+    <section id="sampul" data-page="1" data-title="Sampul (Cover)" class="page-section hero-mesh pt-10 pb-20 sm:py-20 border-b border-stone-200/70">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <!-- Top Eyebrow Pill -->
+        <div class="flex flex-col items-center text-center">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E6EFE9] border border-[#234233]/15 text-[#234233] text-xs font-semibold tracking-wide uppercase mb-6 apple-pill-shadow">
+            <span class="w-2 h-2 rounded-full bg-[#234233]"></span>
+            Halaman 1 • Sampul E-Booklet Fiqih Munakahat
+          </div>
+
+          <!-- Main Headline (Apple Keynote Typography) -->
+          <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-stone-900 leading-[1.08] max-w-4xl">
+            NIKAH JANGAN CUMA MODAL NEKAT:
+            <span class="block text-[#234233] mt-2 text-2xl sm:text-4xl md:text-5xl font-extrabold">
+              Panduan Fiqih Munakahat untuk Gen-Z
+            </span>
+          </h1>
+
+          <!-- Sub-headline -->
+          <p class="mt-6 text-base sm:text-xl text-stone-600 font-medium max-w-2xl leading-relaxed italic">
+            "Nikah Muda: Ibadah atau Musibah? Kenali Konsep Istitha'ah Sebelum Melangkah ke Pelaminan"
+          </p>
+
+          <!-- Quick Action Buttons -->
+          <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <a href="#realitas" id="ctaStartRead" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#234233] hover:bg-[#193025] text-white font-semibold text-sm shadow-md transition">
+              Mulai Baca Materi
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#asesmen" id="ctaJumpQuiz" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-stone-100 text-stone-900 border border-stone-300 font-semibold text-sm shadow-sm transition">
+              Cek Kesiapan Munakahat
+            </a>
+          </div>
+        </div>
+
+        <!-- Centerpiece Visual Card: Vector Illustration + Interactive Crossroads Signpost -->
+        <div class="mt-12 apple-card rounded-3xl p-4 sm:p-6 bg-white/90">
+          <div class="relative rounded-2xl overflow-hidden bg-[#F4EFE6] border border-stone-200/80">
+            <img
+              src="assets/jalan.PNG"
+              alt="Ilustrasi Vektor Remaja Muslim Modern di Persimpangan Jalan"
+              class="w-full max-h-[440px] object-cover object-center"
+            >
+
+            <!-- Interactive Crossroads Signpost Overlay -->
+            <div class="p-4 sm:p-5 bg-white/95 backdrop-blur-md border-t border-stone-200/80">
+              <div class="text-xs font-bold uppercase tracking-wider text-stone-400 text-center mb-3">
+                Persimpangan Pilihan Remaja Muslim Modern — Klik Arah untuk Simulasi
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button type="button" data-road="ilmu" class="road-choice-btn group flex items-center justify-between p-3.5 rounded-2xl border-2 border-emerald-700/80 bg-emerald-50/90 hover:bg-emerald-100/80 text-left transition">
+                  <div class="flex items-center gap-3">
+                    <span class="w-9 h-9 rounded-xl bg-emerald-800 text-white flex items-center justify-center font-bold">
+                      ←
+                    </span>
+                    <div>
+                      <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 block">Arah Pilihan 1</span>
+                      <span class="text-sm sm:text-base font-extrabold text-emerald-950">Kesiapan / Ilmu (Istitha'ah)</span>
+                    </div>
+                  </div>
+                  <span class="text-xs font-semibold text-emerald-800 group-hover:translate-x-0.5 transition">Pilih</span>
+                </button>
+
+                <button type="button" data-road="tren" class="road-choice-btn group flex items-center justify-between p-3.5 rounded-2xl border-2 border-amber-700/40 bg-amber-50/70 hover:bg-amber-100/70 text-left transition">
+                  <div class="flex items-center gap-3">
+                    <span class="w-9 h-9 rounded-xl bg-amber-800 text-white flex items-center justify-center font-bold">
+                      →
+                    </span>
+                    <div>
+                      <span class="text-xs font-bold uppercase tracking-wider text-amber-900 block">Arah Pilihan 2</span>
+                      <span class="text-sm sm:text-base font-extrabold text-amber-950">Tren Semata (Modal Nekat)</span>
+                    </div>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-900 group-hover:translate-x-0.5 transition">Pilih</span>
+                </button>
+              </div>
+
+              <!-- Dynamic Road Feedback Banner -->
+              <div id="roadFeedbackBox" class="mt-3 px-4 py-3 rounded-xl bg-[#E6EFE9] text-[#234233] text-xs sm:text-sm font-medium flex items-center justify-between gap-2">
+                <span id="roadFeedbackText">
+                  <strong>Arah Kesiapan / Ilmu:</strong> Menikah dengan bekal ilmu agama, kematangan mental, finansial, dan fisik melahirkan keluarga <em>Sakinah, Mawaddah, wa Rahmah</em>.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer Credit Card (Kelompok Apple) -->
+          <div class="mt-5 rounded-2xl bg-[#234233] text-white p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div class="w-11 h-11 rounded-2xl bg-white/15 flex items-center justify-center text-emerald-200 flex-shrink-0">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.33c.67-.81 1.12-1.94 1-3.08-.96.04-2.13.64-2.82 1.45-.61.7-.11 1.85-.99 2.98 1.08.08 2.14-.54 2.81-1.35"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-[11px] uppercase tracking-widest text-emerald-200 font-bold">Disusun Oleh</div>
+                <div class="text-sm sm:text-base font-bold">
+                  Kelompok Apple : M.Fadel Abdulloh , Adit Fakot , Fathir Danu
+                </div>
+              </div>
+            </div>
+            <div class="px-4 py-2 rounded-xl bg-white/10 text-xs sm:text-sm font-semibold text-emerald-100 border border-white/15">
+              Dosen : Bu Fil Isnain S.Pd.i, M.Pdi <br>Mata Kuliah Pendidikan Agama Islam
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         HALAMAN 2: EKSPEKTASI MEDSOS VS REALITAS RUMAH TANGGA
+    ====================================================================== -->
+    <section id="realitas" data-page="2" data-title="Ekspektasi Medsos vs Realitas" class="page-section py-16 sm:py-24 border-b border-stone-200/70">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <!-- Section Header -->
+        <div class="max-w-3xl">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#3A6B52] bg-[#E6EFE9] px-3 py-1 rounded-full mb-3">
+            Halaman 2 • Ekspektasi Medsos vs Realitas Rumah Tangga
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+            Jangan Terjebak Romantisasi Semu!
+          </h2>
+          <p class="mt-4 text-base sm:text-lg text-stone-600 leading-relaxed">
+            Banyak remaja ingin segera menikah muda karena terbuai konten romantis di media sosial atau sekadar ingin lepas dari masalah rumah. Padahal, realitas pernikahan menuntut tanggung jawab yang sangat besar:
+          </p>
+        </div>
+
+        <!-- Filter View Switcher for Split Screen -->
+        <div class="mt-8 flex flex-wrap items-center justify-between gap-4">
+          <div class="inline-flex p-1 rounded-2xl bg-stone-200/70 text-xs font-semibold">
+            <button type="button" data-split-filter="all" class="split-filter-btn px-3.5 py-2 rounded-xl bg-white text-stone-900 shadow-sm transition">
+              Split Screen (2 Kolom)
+            </button>
+            <button type="button" data-split-filter="medsos" class="split-filter-btn px-3.5 py-2 rounded-xl text-stone-600 hover:text-stone-900 transition">
+              Sorot Ekspektasi Medsos
+            </button>
+            <button type="button" data-split-filter="realitas" class="split-filter-btn px-3.5 py-2 rounded-xl text-stone-600 hover:text-stone-900 transition">
+              Sorot Realitas Pernikahan
+            </button>
+          </div>
+          <span class="text-xs text-stone-500 font-medium">3 Perbandingan Utama</span>
+        </div>
+
+        <!-- Split Screen Header Cards (Left: Heart/Camera, Right: Exclamation/Warning) -->
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div id="headerMedsos" class="apple-card rounded-2xl p-5 border-l-4 border-l-pink-600 flex items-center gap-4 bg-gradient-to-r from-pink-50/70 to-white">
+            <div class="w-12 h-12 rounded-2xl bg-pink-600 text-white flex items-center justify-center shadow-sm flex-shrink-0">
+              <!-- Social Media Heart & Camera Icon -->
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-pink-700 block">Sisi Kiri • Ikon Media Sosial</span>
+              <h3 class="text-lg font-extrabold text-stone-900">Ekspektasi di Media Sosial</h3>
+            </div>
+          </div>
+
+          <div id="headerRealitas" class="apple-card rounded-2xl p-5 border-l-4 border-l-red-600 flex items-center gap-4 bg-gradient-to-r from-red-50/70 to-white">
+            <div class="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center shadow-sm flex-shrink-0">
+              <!-- Warning / Exclamation Sign Icon -->
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-red-700 block">Sisi Kanan • Tanda Peringatan</span>
+              <h3 class="text-lg font-extrabold text-stone-900">Realitas Pernikahan Dini (Tanpa Kesiapan)</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2-Column Split Comparison Table -->
+        <div class="mt-4 apple-card rounded-3xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-stone-200 bg-stone-100/80 text-xs font-bold uppercase tracking-wider text-stone-600">
+                  <th class="col-medsos py-4 px-6 w-1/2 border-r border-stone-200/80">
+                    Ekspektasi di Media Sosial
+                  </th>
+                  <th class="col-realitas py-4 px-6 w-1/2">
+                    Realitas Pernikahan Dini (Tanpa Kesiapan)
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-stone-200/80 text-sm sm:text-base">
+                <!-- Row 1 -->
+                <tr class="hover:bg-stone-50/80 transition">
+                  <td class="col-medsos p-6 align-top border-r border-stone-200/80 bg-pink-50/20">
+                    <div class="flex items-start gap-3">
+                      <span class="mt-1 w-6 h-6 rounded-full bg-pink-100 text-pink-700 flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+                      <p class="italic text-stone-700 font-medium leading-relaxed">
+                        "Nikah muda itu seru, bisa pacaran halal setiap hari dan jalan-jalan terus."
+                      </p>
+                    </div>
+                  </td>
+                  <td class="col-realitas p-6 align-top bg-red-50/15">
+                    <div class="flex items-start gap-3">
+                      <span class="mt-1 w-6 h-6 rounded-full bg-red-100 text-red-700 flex items-center justify-center text-xs font-bold flex-shrink-0">!</span>
+                      <p class="text-stone-900 font-semibold leading-relaxed">
+                        Tanggung jawab mencari nafkah, mengatur keuangan rumah tangga, dan tekanan mental saat penghasilan belum stabil.
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 2 -->
+                <tr class="hover:bg-stone-50/80 transition">
+                  <td class="col-medsos p-6 align-top border-r border-stone-200/80 bg-pink-50/20">
+                    <div class="flex items-start gap-3">
+                      <span class="mt-1 w-6 h-6 rounded-full bg-pink-100 text-pink-700 flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                      <p class="italic text-stone-700 font-medium leading-relaxed">
+                        "Yang penting sah dulu, urusan rezeki dan mental bisa sambil jalan."
+                      </p>
+                    </div>
+                  </td>
+                  <td class="col-realitas p-6 align-top bg-red-50/15">
+                    <div class="flex items-start gap-3">
+                      <span class="mt-1 w-6 h-6 rounded-full bg-red-100 text-red-700 flex items-center justify-center text-xs font-bold flex-shrink-0">!</span>
+                      <p class="text-stone-900 font-semibold leading-relaxed">
+                        Rentan memicu konflik emosi, Kekerasan Dalam Rumah Tangga (KDRT), hingga tingginya angka perceraian di usia belia.
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 3 -->
+                <tr class="hover:bg-stone-50/80 transition">
+                  <td class="col-medsos p-6 align-top border-r border-stone-200/80 bg-pink-50/20">
+                    <div class="flex items-start gap-3">
+                      <span class="mt-1 w-6 h-6 rounded-full bg-pink-100 text-pink-700 flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                      <p class="italic text-stone-700 font-medium leading-relaxed">
+                        "Cepat punya anak di usia muda biar terlihat seperti kakak-adik."
+                      </p>
+                    </div>
+                  </td>
+                  <td class="col-realitas p-6 align-top bg-red-50/15">
+                    <div class="flex items-start gap-3">
+                      <span class="mt-1 w-6 h-6 rounded-full bg-red-100 text-red-700 flex items-center justify-center text-xs font-bold flex-shrink-0">!</span>
+                      <p class="text-stone-900 font-semibold leading-relaxed">
+                        Risiko medis pada kesehatan reproduksi remaja, depresi pasca-melahirkan, anak berisiko stunting, dan terputusnya jenjang pendidikan.
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Callout Box: Mitsaqan Ghalizha (QS. An-Nisa: 21) -->
+        <div class="mt-8 apple-card rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#234233] to-[#1A3327] text-white">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="space-y-2 max-w-xl">
+              <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emerald-300">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                Pengingat Al-Qur'an • Mitsaqan Ghalizha
+              </div>
+              <p class="text-sm sm:text-base text-emerald-50 font-medium leading-relaxed">
+                Ingat! Dalam Al-Qur'an, pernikahan disebut sebagai <strong>Mitsaqan Ghalizha</strong> (Perjanjian yang Sangat Kokoh/Berat):
+              </p>
+              <blockquote class="text-base sm:text-lg font-semibold text-white italic pt-1">
+                "Dan mereka (istri-istrimu) telah mengambil dari kamu perjanjian yang kuat." <span class="text-emerald-300 not-italic font-bold">(QS. An-Nisa: 21)</span>
+              </blockquote>
+            </div>
+            <div class="bg-white/10 border border-white/15 rounded-2xl px-6 py-5 text-right md:min-w-[290px]">
+              <p class="font-arabic text-2xl sm:text-3xl text-white font-bold" dir="rtl" lang="ar">
+                وَأَخَذْنَ مِنكُم مِّيثَاقًا غَلِيظًا
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         HALAMAN 3: MELURUSKAN DALIL "NIKAH MUDA" & KONSEP ISTITHA'AH
+    ====================================================================== -->
+    <section id="istithaah" data-page="3" data-title="Dalil & Konsep Istitha'ah" class="page-section py-16 sm:py-24 border-b border-stone-200/70 bg-[#F4F1EA]/60">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <div class="max-w-3xl">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#3A6B52] bg-[#E6EFE9] px-3 py-1 rounded-full mb-3">
+            Halaman 3 • Meluruskan Dalil "Nikah Muda" &amp; Konsep Istitha'ah
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+            Memahami Hadis Anjuran Menikah Secara Utuh
+          </h2>
+          <p class="mt-4 text-base sm:text-lg text-stone-600 leading-relaxed">
+            Sering kali kita mendengar anjuran menyegerakan nikah, namun syarat utamanya justru terlewatkan. Mari perhatikan sabda Rasulullah SAW berikut secara lengkap:
+          </p>
+        </div>
+
+        <!-- Callout Box for Hadith (Top) -->
+        <div class="mt-8 apple-card rounded-3xl p-6 sm:p-8 border-l-4 border-l-[#234233]">
+          <div class="flex items-center justify-between flex-wrap gap-2 mb-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#234233] bg-[#E6EFE9] px-3 py-1 rounded-full">
+              Hadis Riwayat Bukhari &amp; Muslim
+            </span>
+            <button id="btnCopyHadith" type="button" class="text-xs font-semibold text-stone-500 hover:text-stone-900 inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-stone-200 bg-stone-50 transition">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span id="copyHadithLabel">Salin Kutipan Hadis</span>
+            </button>
+          </div>
+
+          <div class="bg-[#F5F8F6] border border-[#234233]/15 rounded-2xl p-5 sm:p-6 mb-5">
+            <p class="font-arabic text-2xl sm:text-3xl text-right text-stone-900 font-bold" dir="rtl" lang="ar">
+              يَا مَعْشَرَ الشَّبَابِ مَنِ اسْتَطَاعَ مِنْكُمُ الْبَاءَةَ فَلْيَتَزَوَّجْ، فَإِنَّهُ أَغَضُّ لِلْبَصَرِ وَأَحْصَنُ لِلْفَرْجِ، وَمَنْ لَمْ يَسْتَطِعْ فَعَلَيْهِ بِالصَّوْمِ فَإِنَّهُ لَهُ وِجَاءٌ
+            </p>
+          </div>
+
+          <blockquote class="text-base sm:text-lg text-stone-700 italic leading-relaxed">
+            "Wahai para pemuda! Barangsiapa di antara kalian telah mampu (<strong>al-ba'ah</strong>), maka menikahlah. Karena menikah itu lebih menundukkan pandangan dan lebih menjaga kehormatan. Namun, barangsiapa yang belum mampu, hendaklah ia berpuasa, karena puasa itu akan menjadi perisai baginya."
+            <span class="not-italic font-bold text-[#234233] block mt-2">— (HR. Bukhari &amp; Muslim)</span>
+          </blockquote>
+        </div>
+
+        <!-- 4 Pillars of Al-Ba'ah / Istitha'ah (Bottom with 4 Circular Icons) -->
+        <div class="mt-12">
+          <div class="max-w-3xl mb-8">
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-stone-900">
+              Apa itu Al-Ba'ah / Istitha'ah (Kemampuan)?
+            </h3>
+            <p class="mt-2 text-base text-stone-600">
+              Para ulama Fiqih Munakahat menjelaskan bahwa kata "mampu" bukan sekadar kematangan biologis, melainkan mencakup <strong>4 Kesiapan Utama</strong>:
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <!-- Pillar 1 -->
+            <div class="apple-card rounded-3xl p-6 flex items-start gap-4">
+              <div class="w-14 h-14 rounded-full bg-[#234233] text-white flex items-center justify-center flex-shrink-0 shadow-md ring-4 ring-[#E6EFE9]">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+              </div>
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-[#3A6B52]">Pilar 01</span>
+                <h4 class="text-lg font-extrabold text-stone-900 mt-0.5">
+                  Kesiapan Ilmu Agama &amp; Rumah Tangga
+                </h4>
+                <p class="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed">
+                  Memahami hak dan kewajiban suami-istri, hukum thaharah, hingga cara mendidik anak sesuai syariat.
+                </p>
+              </div>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div class="apple-card rounded-3xl p-6 flex items-start gap-4">
+              <div class="w-14 h-14 rounded-full bg-[#234233] text-white flex items-center justify-center flex-shrink-0 shadow-md ring-4 ring-[#E6EFE9]">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-[#3A6B52]">Pilar 02</span>
+                <h4 class="text-lg font-extrabold text-stone-900 mt-0.5">
+                  Kesiapan Mental &amp; Emosional
+                </h4>
+                <p class="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed">
+                  Mampu mengelola ego, menyelesaikan konflik secara dewasa tanpa kekerasan, dan siap berkomitmen jangka panjang.
+                </p>
+              </div>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div class="apple-card rounded-3xl p-6 flex items-start gap-4">
+              <div class="w-14 h-14 rounded-full bg-[#234233] text-white flex items-center justify-center flex-shrink-0 shadow-md ring-4 ring-[#E6EFE9]">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2"/>
+                  <line x1="2" y1="10" x2="22" y2="10"/>
+                </svg>
+              </div>
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-[#3A6B52]">Pilar 03</span>
+                <h4 class="text-lg font-extrabold text-stone-900 mt-0.5">
+                  Kesiapan Finansial (Nafkah)
+                </h4>
+                <p class="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed">
+                  Memiliki kemampuan bekerja untuk memenuhi kebutuhan pokok pangan, sandang, dan tempat tinggal keluarga.
+                </p>
+              </div>
+            </div>
+
+            <!-- Pillar 4 -->
+            <div class="apple-card rounded-3xl p-6 flex items-start gap-4">
+              <div class="w-14 h-14 rounded-full bg-[#234233] text-white flex items-center justify-center flex-shrink-0 shadow-md ring-4 ring-[#E6EFE9]">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+              </div>
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-[#3A6B52]">Pilar 04</span>
+                <h4 class="text-lg font-extrabold text-stone-900 mt-0.5">
+                  Kesiapan Fisik &amp; Kesehatan
+                </h4>
+                <p class="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed">
+                  Kematangan organ reproduksi dan fisik untuk menghindari risiko kematian ibu dan bayi.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         HALAMAN 4: 5 HUKUM MENIKAH DALAM FIQIH MUNAKAHAT
+    ====================================================================== -->
+    <section id="hukum" data-page="4" data-title="5 Hukum Menikah" class="page-section py-16 sm:py-24 border-b border-stone-200/70">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div class="max-w-2xl">
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#3A6B52] bg-[#E6EFE9] px-3 py-1 rounded-full mb-3">
+              Halaman 4 • 5 Hukum Menikah dalam Fiqih Munakahat
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+              Tahukah Kamu? Hukum Menikah Tidak Selalu Sunnah!
+            </h2>
+            <p class="mt-3 text-base sm:text-lg text-stone-600">
+              Dalam Fiqih Munakahat, hukum asal menikah dapat berubah mengikuti kondisi dan kesiapan seseorang:
+            </p>
+          </div>
+
+          <!-- Color Filter Pills -->
+          <div class="flex flex-wrap gap-1.5 bg-stone-200/70 p-1 rounded-2xl text-xs font-semibold">
+            <button type="button" data-law-filter="all" class="law-filter-btn px-3 py-1.5 rounded-xl bg-white text-stone-900 shadow-sm transition">Semua (5)</button>
+            <button type="button" data-law-filter="hijau" class="law-filter-btn px-3 py-1.5 rounded-xl text-emerald-800 hover:bg-white/60 transition">Hijau (Wajib/Sunnah)</button>
+            <button type="button" data-law-filter="kuning" class="law-filter-btn px-3 py-1.5 rounded-xl text-amber-800 hover:bg-white/60 transition">Kuning (Mubah)</button>
+            <button type="button" data-law-filter="oranye" class="law-filter-btn px-3 py-1.5 rounded-xl text-orange-800 hover:bg-white/60 transition">Oranye (Makruh)</button>
+            <button type="button" data-law-filter="merah" class="law-filter-btn px-3 py-1.5 rounded-xl text-red-800 hover:bg-white/60 transition">Merah (Haram)</button>
+          </div>
+        </div>
+
+        <!-- Stepped Cards Ladder -->
+        <div class="mt-8 space-y-4">
+          <!-- 1. WAJIB (Hijau) -->
+          <div data-law-group="hijau" class="law-card apple-card rounded-3xl overflow-hidden border-l-8 border-l-emerald-700 flex flex-col sm:flex-row items-stretch">
+            <div class="sm:w-56 bg-emerald-700 text-white p-5 flex flex-col justify-center">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-200">Tangga 01 • Hijau</span>
+              <span class="text-2xl font-black tracking-tight mt-0.5">WAJIB</span>
+            </div>
+            <div class="p-6 flex-1 bg-emerald-50/40 flex items-center">
+              <p class="text-stone-800 text-base leading-relaxed font-medium">
+                Bagi orang yang sudah mampu lahir-batin (memiliki biaya nafkah dan mental yang matang) serta sangat khawatir terjerumus dalam perzinaan jika tidak segera menikah.
+              </p>
+            </div>
+          </div>
+
+          <!-- 2. SUNNAH (Hijau) -->
+          <div data-law-group="hijau" class="law-card apple-card rounded-3xl overflow-hidden border-l-8 border-l-emerald-600 flex flex-col sm:flex-row items-stretch">
+            <div class="sm:w-56 bg-emerald-600 text-white p-5 flex flex-col justify-center">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-100">Tangga 02 • Hijau</span>
+              <span class="text-2xl font-black tracking-tight mt-0.5">SUNNAH</span>
+            </div>
+            <div class="p-6 flex-1 bg-emerald-50/25 flex items-center">
+              <p class="text-stone-800 text-base leading-relaxed font-medium">
+                Bagi orang yang sudah mampu secara finansial dan mental, memiliki keinginan menikah, namun masih sanggup menahan dirinya dari perbuatan zina.
+              </p>
+            </div>
+          </div>
+
+          <!-- 3. MUBAH (Kuning) -->
+          <div data-law-group="kuning" class="law-card apple-card rounded-3xl overflow-hidden border-l-8 border-l-amber-500 flex flex-col sm:flex-row items-stretch">
+            <div class="sm:w-56 bg-amber-500 text-stone-950 p-5 flex flex-col justify-center">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-amber-950/80">Tangga 03 • Kuning</span>
+              <span class="text-xl font-black tracking-tight mt-0.5">MUBAH (Boleh)</span>
+            </div>
+            <div class="p-6 flex-1 bg-amber-50/35 flex items-center">
+              <p class="text-stone-800 text-base leading-relaxed font-medium">
+                Bagi orang yang mampu dan tidak memiliki desakan syahwat yang membahayakan maupun halangan untuk menikah.
+              </p>
+            </div>
+          </div>
+
+          <!-- 4. MAKRUH (Oranye) -->
+          <div data-law-group="oranye" class="law-card apple-card rounded-3xl overflow-hidden border-l-8 border-l-orange-600 flex flex-col sm:flex-row items-stretch">
+            <div class="sm:w-56 bg-orange-600 text-white p-5 flex flex-col justify-center">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-orange-100">Tangga 04 • Oranye</span>
+              <span class="text-2xl font-black tracking-tight mt-0.5">MAKRUH</span>
+            </div>
+            <div class="p-6 flex-1 bg-orange-50/35 flex items-center">
+              <p class="text-stone-800 text-base leading-relaxed font-medium">
+                Bagi orang yang sebenarnya ingin menikah, tetapi belum memiliki kemampuan memberi nafkah dan belum siap memikul tanggung jawab rumah tangga (meski tidak sampai berniat menyakiti pasangan).
+              </p>
+            </div>
+          </div>
+
+          <!-- 5. HARAM (Merah) -->
+          <div data-law-group="merah" class="law-card apple-card rounded-3xl overflow-hidden border-l-8 border-l-red-700 flex flex-col sm:flex-row items-stretch">
+            <div class="sm:w-56 bg-red-700 text-white p-5 flex flex-col justify-center">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-red-200">Tangga 05 • Merah</span>
+              <span class="text-2xl font-black tracking-tight mt-0.5">HARAM</span>
+            </div>
+            <div class="p-6 flex-1 bg-red-50/35 flex items-center">
+              <p class="text-stone-800 text-base leading-relaxed font-medium">
+                Bagi orang yang tidak mampu memberi nafkah lahir-batin dan diyakini akan menelantarkan, menyakiti, atau menzalimi pasangannya jika tetap memaksakan diri menikah.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         HALAMAN 5: MAQASHID SYARIAH, HUKUM NEGARA & SOLUSI ISLAM
+    ====================================================================== -->
+    <section id="maqashid" data-page="5" data-title="Maqashid Syariah & Solusi Islam" class="page-section py-16 sm:py-24 border-b border-stone-200/70 bg-[#F4F1EA]/60">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <div class="max-w-3xl">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#3A6B52] bg-[#E6EFE9] px-3 py-1 rounded-full mb-3">
+            Halaman 5 • Maqashid Syariah, Hukum Negara &amp; Solusi Islam
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+            Mengapa Pernikahan Dini Dilarang Agama &amp; Negara?
+          </h2>
+          <p class="mt-4 text-base sm:text-lg text-stone-600 leading-relaxed">
+            Islam menetapkan syariat demi kemaslahatan manusia (<strong>Maqashid Syariah</strong>) dan menolak segala bentuk bahaya (<em>Laa dharara wa laa dhiraara</em>):
+          </p>
+        </div>
+
+        <!-- Top Part: Maqashid Syariah & UU Perkawinan Bento Grid -->
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <!-- Hifzh an-Nafs -->
+          <div class="apple-card rounded-3xl p-6 border-t-4 border-t-[#234233]">
+            <div class="text-xs font-bold uppercase tracking-wider text-[#3A6B52]">Maqashid Syariah 01</div>
+            <h3 class="text-lg font-extrabold text-stone-900 mt-1">Menjaga Jiwa (Hifzh an-Nafs)</h3>
+            <p class="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed">
+              Mencegah risiko gangguan mental dan bahaya medis kehamilan usia anak.
+            </p>
+          </div>
+
+          <!-- Hifzh al-'Aql -->
+          <div class="apple-card rounded-3xl p-6 border-t-4 border-t-[#234233]">
+            <div class="text-xs font-bold uppercase tracking-wider text-[#3A6B52]">Maqashid Syariah 02</div>
+            <h3 class="text-lg font-extrabold text-stone-900 mt-1">Menjaga Akal (Hifzh al-'Aql)</h3>
+            <p class="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed">
+              Memastikan remaja tidak putus sekolah dan tetap memperoleh hak pendidikan yang layak.
+            </p>
+          </div>
+
+          <!-- Hifzh an-Nasl -->
+          <div class="apple-card rounded-3xl p-6 border-t-4 border-t-[#234233]">
+            <div class="text-xs font-bold uppercase tracking-wider text-[#3A6B52]">Maqashid Syariah 03</div>
+            <h3 class="text-lg font-extrabold text-stone-900 mt-1">Menjaga Keturunan (Hifzh an-Nasl)</h3>
+            <p class="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed">
+              Melahirkan generasi yang sehat, terdidik, dan terhindar dari penelantaran.
+            </p>
+          </div>
+
+          <!-- UU No. 16 Tahun 2019 -->
+          <div class="apple-card rounded-3xl p-6 border-t-4 border-t-[#C85A32] bg-orange-50/30">
+            <div class="text-xs font-bold uppercase tracking-wider text-[#C85A32]">Hukum Positif Indonesia</div>
+            <h3 class="text-lg font-extrabold text-stone-900 mt-1">Selaras dengan Hukum Negara</h3>
+            <p class="mt-2 text-sm sm:text-base text-stone-700 leading-relaxed">
+              Berdasarkan <strong>UU No. 16 Tahun 2019</strong>, batas usia minimal menikah bagi laki-laki dan perempuan di Indonesia adalah <strong>19 tahun</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Bottom Part: Solusi Al-Qur'an ('Iffah) & Langkah Praktis -->
+        <div class="mt-12 apple-card rounded-3xl p-6 sm:p-8">
+          <h3 class="text-2xl font-extrabold text-stone-900">
+            Belum Siap Nikah? Ini Solusi Al-Qur'an untuk Menjaga Diri ('Iffah)!
+          </h3>
+
+          <!-- QS. An-Nur: 33 Box -->
+          <div class="mt-5 rounded-2xl bg-[#E6EFE9] p-5 sm:p-6 border border-[#234233]/15">
+            <p class="font-arabic text-2xl sm:text-3xl text-right text-stone-900 font-bold" dir="rtl" lang="ar">
+              وَلْيَسْتَعْفِفِ الَّذِينَ لَا يَجِدُونَ نِكَاحًا حَتَّىٰ يُغْنِيَهُمُ اللَّهُ مِن فَضْلِهِ
+            </p>
+            <blockquote class="mt-3 text-sm sm:text-base text-stone-800 italic">
+              "Dan hendaklah orang-orang yang belum mampu menikah menjaga kesucian dirinya, sampai Allah memampukan mereka dengan karunia-Nya." <span class="not-italic font-bold text-[#234233]">(QS. An-Nur: 33)</span>
+            </blockquote>
+          </div>
+
+          <!-- 3 Practical Steps -->
+          <div class="mt-6">
+            <h4 class="text-base font-extrabold uppercase tracking-wider text-[#234233] mb-4">
+              Langkah Praktis Remaja Muslim:
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex flex-col justify-between">
+                <span class="w-8 h-8 rounded-full bg-[#234233] text-white font-bold text-xs flex items-center justify-center mb-3">01</span>
+                <p class="text-sm sm:text-base text-stone-700 font-medium leading-relaxed">
+                  Rutin menjalankan puasa sunnah (seperti Senin-Kamis) untuk meredam gejolak syahwat.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex flex-col justify-between">
+                <span class="w-8 h-8 rounded-full bg-[#234233] text-white font-bold text-xs flex items-center justify-center mb-3">02</span>
+                <p class="text-sm sm:text-base text-stone-700 font-medium leading-relaxed">
+                  Menjaga batasan pergaulan lawan jenis dan menundukkan pandangan (<em>ghadul bashar</em>), termasuk di media sosial.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex flex-col justify-between">
+                <span class="w-8 h-8 rounded-full bg-[#234233] text-white font-bold text-xs flex items-center justify-center mb-3">03</span>
+                <p class="text-sm sm:text-base text-stone-700 font-medium leading-relaxed">
+                  Menyibukkan diri dengan menuntut ilmu, berorganisasi, mengasah keterampilan karier, dan berprestasi.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         HALAMAN 6: TES KESIAPAN DIRI (SELF-ASSESSMENT) & PENUTUP
+    ====================================================================== -->
+    <section id="asesmen" data-page="6" data-title="Tes Kesiapan Diri & Penutup" class="page-section py-16 sm:py-24">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <div class="max-w-3xl">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#3A6B52] bg-[#E6EFE9] px-3 py-1 rounded-full mb-3">
+            Halaman 6 • Tes Kesiapan Diri (Self-Assessment) &amp; Penutup
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+            Cek Kesiapan Munakahat: Apakah Kamu Sudah Siap atau Sekadar Kebelet?
+          </h2>
+          <p class="mt-3 text-base sm:text-lg text-stone-600">
+            Coba jawab jujur daftar pernyataan berikut ini dengan mencentang kotak yang sesuai dengan kondisimu saat ini:
+          </p>
+        </div>
+
+        <!-- Interactive Self-Assessment Card -->
+        <div class="mt-8 apple-card rounded-3xl p-6 sm:p-8">
+          <div class="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-stone-200">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-stone-400 block">Progress Kesiapan Diri</span>
+              <span id="scoreCounterText" class="text-xl font-black text-[#234233]">0 dari 5 Pernyataan Tercentang</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="btnCheckAll" type="button" class="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 transition">
+                Centang Semua
+              </button>
+              <button id="btnResetCheck" type="button" class="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 transition">
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full h-2.5 bg-stone-100 rounded-full overflow-hidden my-4">
+            <div id="scoreProgressBar" class="h-full bg-[#234233] transition-all duration-300" style="width: 0%"></div>
+          </div>
+
+          <!-- 5 Checklist Items -->
+          <div class="divide-y divide-stone-200/80">
+            <label class="flex items-start gap-4 py-4 cursor-pointer group">
+              <input type="checkbox" class="apple-checkbox readiness-check mt-0.5">
+              <span class="text-sm sm:text-base text-stone-800 font-medium group-hover:text-stone-950 leading-relaxed select-none">
+                Aku sudah memahami ilmu dasar Fiqih Munakahat serta hak dan kewajiban suami/istri dalam Islam.
+              </span>
+            </label>
+
+            <label class="flex items-start gap-4 py-4 cursor-pointer group">
+              <input type="checkbox" class="apple-checkbox readiness-check mt-0.5">
+              <span class="text-sm sm:text-base text-stone-800 font-medium group-hover:text-stone-950 leading-relaxed select-none">
+                Ketika marah atau berbeda pendapat, aku bisa berdiskusi dengan tenang tanpa membentak, menyakiti, atau <em>silent treatment</em>.
+              </span>
+            </label>
+
+            <label class="flex items-start gap-4 py-4 cursor-pointer group">
+              <input type="checkbox" class="apple-checkbox readiness-check mt-0.5">
+              <span class="text-sm sm:text-base text-stone-800 font-medium group-hover:text-stone-950 leading-relaxed select-none">
+                Aku sudah memiliki penghasilan mandiri yang tetap (bagi calon suami) atau kecakapan mengelola keuangan rumah tangga (bagi calon istri).
+              </span>
+            </label>
+
+            <label class="flex items-start gap-4 py-4 cursor-pointer group">
+              <input type="checkbox" class="apple-checkbox readiness-check mt-0.5">
+              <span class="text-sm sm:text-base text-stone-800 font-medium group-hover:text-stone-950 leading-relaxed select-none">
+                Usiaku sudah di atas 19 tahun dan siap secara fisik maupun mental untuk mengasuh serta mendidik anak.
+              </span>
+            </label>
+
+            <label class="flex items-start gap-4 py-4 cursor-pointer group">
+              <input type="checkbox" class="apple-checkbox readiness-check mt-0.5">
+              <span class="text-sm sm:text-base text-stone-800 font-medium group-hover:text-stone-950 leading-relaxed select-none">
+                Keinginanku menikah didasari kesiapan beribadah jangka panjang, bukan karena ikut-ikutan tren atau lari dari masalah keluarga.
+              </span>
+            </label>
+          </div>
+
+          <!-- Evaluation Result Cards -->
+          <div class="mt-6 pt-6 border-t border-stone-200">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-stone-500 mb-3">
+              Hasil Evaluasi Singkat:
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div id="evalCardUnder" class="rounded-2xl p-5 border-2 border-amber-500 bg-amber-50/70 transition-all">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-sm font-extrabold text-amber-900">Jika &lt; 4 tercentang:</span>
+                  <span id="badgeActiveUnder" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-600 text-white">Statusmu Saat Ini</span>
+                </div>
+                <p class="text-sm text-amber-950 leading-relaxed">
+                  Jangan terburu-buru! Fokuslah memantaskan diri, selesaikan pendidikanmu, dan jaga kehormatan diri (<em>'iffah</em>) hingga waktu terbaik tiba.
+                </p>
+              </div>
+
+              <div id="evalCardReady" class="rounded-2xl p-5 border border-stone-200 bg-stone-50/60 opacity-65 transition-all">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-sm font-extrabold text-emerald-900">Jika semua tercentang:</span>
+                  <span id="badgeActiveReady" class="hidden text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-700 text-white">Statusmu Saat Ini</span>
+                </div>
+                <p class="text-sm text-emerald-950 leading-relaxed">
+                  Alhamdulillah, kamu memiliki bekal awal yang baik. Teruslah belajar dan konsultasikan niat baikmu bersama orang tua.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR Code Placement Box (Center Bottom) — Active Scannable QR + Built-in Quiz & Custom URL Generator -->
+        <div id="kuis-evaluasi" class="mt-8 apple-card rounded-3xl p-6 sm:p-8 border-2 border-[#234233]/25 bg-white">
+          <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div class="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left flex-1">
+              <!-- Active Scannable QR Code Container -->
+              <div class="relative group flex-shrink-0">
+                <div class="w-40 h-40 rounded-2xl border-2 border-[#234233] bg-white p-2.5 flex flex-col items-center justify-center shadow-md">
+                  <img id="qrCustomPreview" alt="QR Code Kuis" class="hidden w-full h-full object-contain rounded-lg" />
+                  <div id="qrDefaultSvg" class="w-full h-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" width="100%" height="100%" shape-rendering="crispEdges">
+  <rect width="35" height="35" fill="#FFFFFF" rx="2"/>
+  <g fill="#234233">
+    <rect x="3" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="30" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="3" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="4" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="5" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="6" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="7" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="8" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="8" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="8" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="8" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="8" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="8" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="8" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="30" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="9" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="10" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="10" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="10" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="10" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="24" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="30" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="11" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="30" y="12" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="13" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="24" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="14" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="15" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="24" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="30" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="16" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="24" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="17" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="18" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="19" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="30" y="20" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="21" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="10" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="24" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="22" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="24" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="30" y="23" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="24" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="21" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="25" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="20" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="26" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="22" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="24" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="30" y="27" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="24" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="28" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="18" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="24" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="27" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="30" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="29" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="30" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="30" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="30" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="30" width="1" height="1" rx="0.15"/>
+    <rect x="19" y="30" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="30" width="1" height="1" rx="0.15"/>
+    <rect x="28" y="30" width="1" height="1" rx="0.15"/>
+    <rect x="29" y="30" width="1" height="1" rx="0.15"/>
+    <rect x="31" y="30" width="1" height="1" rx="0.15"/>
+    <rect x="3" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="4" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="5" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="6" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="7" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="8" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="9" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="11" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="12" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="13" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="14" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="15" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="16" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="17" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="23" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="25" y="31" width="1" height="1" rx="0.15"/>
+    <rect x="26" y="31" width="1" height="1" rx="0.15"/>
+  </g>
+</svg>
+                  </div>
+                </div>
+                <span class="mt-2 inline-flex items-center justify-center gap-1.5 text-[11px] font-bold text-[#234233] bg-[#E6EFE9] px-3 py-1 rounded-full w-full">
+                  <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                  QR Code Aktif (Scan me)
+                </span>
+              </div>
+
+              <div class="space-y-2.5 max-w-xl">
+                <div class="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#234233] bg-[#E6EFE9] px-3 py-1 rounded-full">
+                  Evaluasi Pembaca
+                </div>
+                <h3 class="text-lg sm:text-xl font-extrabold text-stone-900 leading-snug">
+                  Pindai (Scan) QR Code di samping untuk kirim evaluasi Pembaca Seputar Pembahasan E-Booklet Fiqih Munakahat!
+                </h3>
+                <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                  QR Code ini aktif dan dapat langsung dipindai menggunakan kamera HP. Anda juga dapat langsung mengirim evaluasi di halaman ini :
+                </p>
+
+                <!-- Dynamic QR URL Generator Input -->
+                <input
+                    id="qrUrlInput"
+                    type="text"
+                    value="https://wa.me/6285222531288?text=Assalamu'alaikum%20Kelompok%20Apple%2C%20saya%20ingin%20mengirimkan%20evaluasi%20E-Booklet%20Fiqih%20Munakahat"
+                    placeholder="Masukkan link Google Form / WhatsApp..."
+                    class="flex-1 px-3.5 py-2 rounded-xl border border-stone-300 text-xs font-medium text-stone-800 focus:outline-none focus:border-[#234233]"
+>
+                  <button
+                    id="btnGenerateQrUrl"
+                    type="button"
+                    class="px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold transition flex-shrink-0"
+                  >
+                    Perbarui QR Code
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons: Open Interactive Quiz Modal / Download QR / Upload Custom QR -->
+            <div class="flex flex-col sm:flex-row lg:flex-col gap-2.5 w-full lg:w-auto flex-shrink-0">
+              <button
+                id="btnOpenEvalModal"
+                type="button"
+                class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#234233] hover:bg-[#193025] text-white text-xs sm:text-sm font-bold shadow-md transition"
+              >
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                Buka Kuis &amp; Evaluasi Sekarang
+              </button>
+
+              <button
+                id="btnDownloadQrPng"
+                type="button"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#E6EFE9] hover:bg-[#d5e5da] text-[#234233] text-xs font-bold transition"
+              >
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Unduh Gambar QR (PNG)
+              </button>
+
+              <label class="cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border border-stone-300 bg-stone-50 hover:bg-stone-100 text-stone-700 text-xs font-semibold transition">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Unggah File QR Lain
+                <input id="qrFileInput" type="file" accept="image/*" class="hidden">
+              </label>
+            </div>
+          </div>
+
+          <!-- Interactive Quiz & Reader Evaluation Drawer / Modal (In-Page) -->
+          <div id="evalModalPanel" class="hidden mt-6 pt-6 border-t-2 border-stone-200/90">
+            <div class="bg-[#FAF8F5] border border-stone-200 rounded-2xl p-5 sm:p-6">
+              <div class="flex items-center justify-between flex-wrap gap-2 pb-4 border-b border-stone-200">
+                <div>
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-[#3A6B52] block">Formulir Interaktif Kelompok Apple</span>
+                  <h4 class="text-lg font-extrabold text-stone-900">Kuis Pemahaman Fiqih Munakahat &amp; Evaluasi Pembaca</h4>
+                </div>
+                <button id="btnCloseEvalModal" type="button" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 transition">
+                  Tutup Formulir ✕
+                </button>
+              </div>
+
+              <form id="readerEvalForm" class="mt-4 space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Nama Pembaca / Mahasiswa</label>
+                    <input id="evalName" type="text" required placeholder="Contoh: Ahmad Fauzi" class="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-sm bg-white focus:outline-none focus:border-[#234233]">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Usia / Semester</label>
+                    <input id="evalAge" type="text" required placeholder="Contoh: 20 Tahun / Semester 3" class="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-sm bg-white focus:outline-none focus:border-[#234233]">
+                  </div>
+                </div>
+
+                <!-- Quiz Q1 -->
+                <div class="p-4 rounded-xl bg-white border border-stone-200">
+                  <p class="text-xs sm:text-sm font-bold text-stone-900 mb-2">
+                    1. Apa arti istilah <em>Mitsaqan Ghalizha</em> dalam QS. An-Nisa: 21 terkait ikatan pernikahan?
+                  </p>
+                  <div class="space-y-1.5 text-xs sm:text-sm text-stone-700">
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q1" value="correct" checked class="accent-[#234233]"> Perjanjian yang sangat kokoh dan berat tanggung jawabnya</label>
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q1" value="wrong1" class="accent-[#234233]"> Perjanjian sementara yang ringan dijalani</label>
+                  </div>
+                </div>
+
+                <!-- Quiz Q2 -->
+                <div class="p-4 rounded-xl bg-white border border-stone-200">
+                  <p class="text-xs sm:text-sm font-bold text-stone-900 mb-2">
+                    2. Apa hukum menikah bagi orang yang belum mampu memberi nafkah lahir-batin dan diyakini akan menelantarkan atau menzalimi pasangannya?
+                  </p>
+                  <div class="space-y-1.5 text-xs sm:text-sm text-stone-700">
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q2" value="wrong1" class="accent-[#234233]"> Tetap Sunnah</label>
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q2" value="correct" checked class="accent-[#234233]"> Haram</label>
+                  </div>
+                </div>
+
+                <!-- Quiz Q3 -->
+                <div class="p-4 rounded-xl bg-white border border-stone-200">
+                  <p class="text-xs sm:text-sm font-bold text-stone-900 mb-2">
+                    3. Berapakah batas usia minimal menikah bagi laki-laki dan perempuan di Indonesia menurut UU No. 16 Tahun 2019?
+                  </p>
+                  <div class="space-y-1.5 text-xs sm:text-sm text-stone-700">
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q3" value="correct" checked class="accent-[#234233]"> 19 Tahun</label>
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q3" value="wrong1" class="accent-[#234233]"> 16 Tahun</label>
+                  </div>
+                </div>
+
+                <!-- Reader Evaluation Rating & Feedback -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Seberapa bermanfaat E-Booklet ini bagi Anda?</label>
+                    <select id="evalRating" class="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-sm bg-white focus:outline-none focus:border-[#234233]">
+                      <option value="5 - Sangat Bermanfaat & Mudah Dipahami">⭐⭐⭐⭐⭐ (5/5) Sangat Bermanfaat &amp; Mudah Dipahami</option>
+                      <option value="4 - Bermanfaat">⭐⭐⭐⭐ (4/5) Bermanfaat</option>
+                      <option value="3 - Cukup">⭐⭐⭐ (3/5) Cukup</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Pesan / Kesan Setelah Membaca E-Booklet</label>
+                    <input id="evalComment" type="text" placeholder="Tulis tanggapan singkat Anda..." class="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-sm bg-white focus:outline-none focus:border-[#234233]">
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-2">
+                  <button type="submit" class="px-6 py-2.5 rounded-full bg-[#234233] hover:bg-[#193025] text-white text-xs sm:text-sm font-bold shadow-sm transition">
+                    Kirim Jawaban &amp; Evaluasi
+                  </button>
+                </div>
+              </form>
+
+              <!-- Submission Result Feedback Banner -->
+              <div id="evalSubmitResult" class="hidden mt-4 p-4 rounded-xl bg-emerald-100 border border-emerald-400 text-emerald-950 text-xs sm:text-sm font-medium"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Closing Quote Banner (QS. Ar-Rum: 21) -->
+        <div class="mt-8 rounded-3xl bg-gradient-to-br from-[#234233] via-[#284B3A] to-[#1A3327] text-white p-8 sm:p-10 text-center shadow-lg">
+          <svg class="w-8 h-8 text-emerald-300/70 mx-auto mb-3" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+          </svg>
+          <blockquote class="text-lg sm:text-2xl font-bold leading-relaxed max-w-3xl mx-auto italic">
+            "Keluarga yang Sakinah, Mawaddah, wa Rahmah (QS. Ar-Rum: 21) tidak dibangun dalam semalam dengan modal nekat, melainkan dipersiapkan dengan ilmu, iman, dan kematangan amal."
+          </blockquote>
+          <div class="mt-6 pt-6 border-t border-white/15 text-xs sm:text-sm text-emerald-200 font-medium">
+            Disusun oleh: <strong>Kelompok Apple : M.Fadel Abdulloh , Adit Fakot, Fathir Danu</strong> — Mata Kuliah Pendidikan Agama Islam 
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
